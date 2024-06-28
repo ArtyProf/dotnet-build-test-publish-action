@@ -35,20 +35,25 @@ runs:
         dotnet-version: '${{ inputs.dotnet-version }}'
 
     - name: Restore dependencies
+      shell: bash
       run: dotnet restore
 
     - name: Build
+      shell: bash
       run: dotnet build ${{ inputs.dotnet-solution-path }} --no-restore --configuration Release
 
     - name: Test
+      shell: bash
       run: dotnet test ${{ inputs.dotnet-solution-path }} --no-build --verbosity normal --configuration Release
 
     - name: Install SonarScanner for .NET
+      shell: bash
       run: dotnet tool install --global dotnet-sonarscanner
 
     - name: Run SonarCloud analysis
       env:
         SONAR_TOKEN: ${{ inputs.sonar-token }}
+      shell: bash
       run: |
         dotnet sonarscanner begin /k:"${{ inputs.project-key }}" /o:"${{ inputs.sonar-organization }}" /d:sonar.login="${{ inputs.sonar-token }}"
         dotnet build ${{ inputs.dotnet-solution-path }} --no-incremental --configuration Release
@@ -56,4 +61,5 @@ runs:
 
     - name: Publish
       if: success()
+      shell: bash
       run: dotnet publish ${{ inputs.dotnet-solution-path }} --configuration Release --output ${{ inputs.path-to-publish }}
