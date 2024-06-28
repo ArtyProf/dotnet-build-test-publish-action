@@ -1,0 +1,59 @@
+name: .NET Build, Test, SonarCloud check and Publish Action
+description: A GitHub Action to build, test, publish .NET projects, and run SonarCloud checks.
+author: Artur Khutak
+
+inputs:
+  sonar-project-key:
+    description: 'SonarCloud project key'
+    required: true
+  sonar-token:
+    description: 'SonarCloud token'
+    required: true
+  sonar-organization:
+    description: 'SonarCloud organization'
+    required: true
+  dotnet-solution-path:
+    description: 'Path to the dotnet solution file (.sln)'
+    default: ''
+  dotnet-version:
+    description: 'Dotnet version for actions/setup-dotnet'
+    default: '8.x'
+  path-to-publish:
+    description: 'Path for dotnet publish'
+    default: './publish'
+
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '${{ inputs.dotnet-version }}'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build ${{ inputs.dotnet-solution-path }} --no-restore --configuration Release
+
+    - name: Test
+      run: dotnet test ${{ inputs.dotnet-solution-path }} --no-build --verbosity normal --configuration Release
+
+    - name: Install SonarScanner for .NET
+      run: dotnet tool install --global dotnet-sonarscanner
+
+    - name: Run SonarCloud analysis
+      env:
+        SONAR_TOKEN: ${{ inputs.sonar-token }}
+      run: |
+        dotnet sonarscanner begin /k:"${{ inputs.project-key }}" /o:"${{ inputs.sonar-organization }}" /d:sonar.login="${{ inputs.sonar-token }}"
+        dotnet build ${{ inputs.dotnet-solution-path }} --no-incremental --configuration Release
+        dotnet sonarscanner end /d:sonar.login="${{ inputs.sonar-token }}"
+
+    - name: Publish
+      if: success()
+      run: dotnet publish ${{ inputs.dotnet-solution-path }} --configuration Release --output ${{ inputs.path-to-publish }}
