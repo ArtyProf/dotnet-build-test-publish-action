@@ -31,7 +31,13 @@ runs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v4
-
+      
+    - name: Set up Java for SonarCloud
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'microsoft'
+        java-version: '21'
+        
     - name: Set up .NET
       uses: actions/setup-dotnet@v4
       with:
