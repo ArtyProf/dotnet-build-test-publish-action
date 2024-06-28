@@ -36,7 +36,7 @@ runs:
 
     - name: Restore dependencies
       shell: bash
-      run: dotnet restore
+      run: dotnet restore ${{ inputs.dotnet-solution-path }}
 
     - name: Build
       shell: bash
