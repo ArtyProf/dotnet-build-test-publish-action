@@ -61,7 +61,7 @@ runs:
         SONAR_TOKEN: ${{ inputs.sonar-token }}
       shell: bash
       run: |
-        dotnet sonarscanner begin /k:"${{ inputs.project-key }}" /o:"${{ inputs.sonar-organization }}" /d:sonar.login="${{ inputs.sonar-token }}"
+        dotnet sonarscanner begin /k:"${{ inputs.sonar-project-key }}" /o:"${{ inputs.sonar-organization }}" /d:sonar.login="${{ inputs.sonar-token }}"
         dotnet build ${{ inputs.dotnet-solution-path }} --no-incremental --configuration Release
         dotnet sonarscanner end /d:sonar.login="${{ inputs.sonar-token }}"
 
