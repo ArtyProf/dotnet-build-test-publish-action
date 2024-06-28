@@ -45,7 +45,13 @@ runs:
     - name: Test
       shell: bash
       run: dotnet test ${{ inputs.dotnet-solution-path }} --no-build --verbosity normal --configuration Release
-
+    
+    - name: Set up Java for SonarCloud
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'microsoft'
+        java-version: '21'
+    
     - name: Install SonarScanner for .NET
       shell: bash
       run: dotnet tool install --global dotnet-sonarscanner
