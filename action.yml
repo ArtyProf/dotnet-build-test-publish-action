@@ -21,9 +21,6 @@ inputs:
   dotnet-version:
     description: 'Dotnet version for actions/setup-dotnet'
     default: '8.x'
-  path-to-publish:
-    description: 'Path for dotnet publish'
-    default: './publish'
 
 
 runs:
@@ -76,4 +73,11 @@ runs:
     - name: Publish
       if: success()
       shell: bash
-      run: dotnet publish ${{ inputs.dotnet-solution-path }} --configuration Release --output ${{ inputs.path-to-publish }}
+      run: dotnet publish ${{ inputs.dotnet-solution-path }} --configuration Release --output ./publish
+
+    - name: Upload Artifact
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: published-files
+        path: ./publish
