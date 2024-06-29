@@ -57,3 +57,7 @@ jobs:
 ### Summary
 
 This `README.md` file now reflects your GitHub username and the filename for your action. Replace the placeholders in the example usage section with your actual project details.
+
+### View stats
+
+<img src="https://hitcounter.pythonanywhere.com/count/tag.svg" alt="Hits">
