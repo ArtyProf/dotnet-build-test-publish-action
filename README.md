@@ -22,7 +22,6 @@ Artur Khutak
 - `sonar-host-url`: SonarCloud host url.
 - `dotnet-solution-path`: Path to the dotnet solution file (.sln). Default is '' (root).
 - `dotnet-version`: Dotnet version for actions/setup-dotnet. Default is '8.x'.
-- `path-to-publish`: Path for dotnet publish. Default is './publish'.
 
 ## Example usage
 
@@ -53,7 +52,6 @@ jobs:
         sonar-host-url: ${{ secrets.SONAR_HOST }} # Optional, default is 'https://sonarcloud.io'
         dotnet-solution-path: './path/to/your/solution.sln' # Optional, default is '' (root)
         dotnet-version: '7.x' # Optional, default is '8.x'
-        path-to-publish: './custom-publish-path' # Optional, default is './publish'
 ```
 
 ### Summary
