@@ -44,7 +44,7 @@ jobs:
 
     steps:
     - name: Use .NET Build, Test, SonarCloud check and Publish Action
-      uses: ArtyProf/dotnet-build-test-publish-action@v1
+      uses: ArtyProf/dotnet-build-test-publish-action@v1.1.0
       with:
         sonar-project-key: ${{ secrets.SONAR_PROJECT_KEY }} # Optional, default is ''
         sonar-token: ${{ secrets.SONAR_TOKEN }} # Optional, default is ''
