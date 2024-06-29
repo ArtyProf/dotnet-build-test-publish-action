@@ -22,6 +22,7 @@ Artur Khutak
 - `sonar-host-url`: SonarCloud host url.
 - `dotnet-solution-path`: Path to the dotnet solution file (.sln). Default is '' (root).
 - `dotnet-version`: Dotnet version for actions/setup-dotnet. Default is '8.x'.
+- `is-need-publish`: If you need to publish files to the artifact, type 'true'
 
 ## Example usage
 
@@ -44,14 +45,15 @@ jobs:
 
     steps:
     - name: Use .NET Build, Test, SonarCloud check and Publish Action
-      uses: ArtyProf/dotnet-build-test-publish-action@v1.1.0
+      uses: ArtyProf/dotnet-build-test-publish-action@v1.2.0
       with:
-        sonar-project-key: ${{ secrets.SONAR_PROJECT_KEY }} # Optional, default is ''
-        sonar-token: ${{ secrets.SONAR_TOKEN }} # Optional, default is ''
-        sonar-organization: ${{ secrets.SONAR_ORGANIZATION }} # Optional, default is ''
+        sonar-project-key: ${{ secrets.SONAR_PROJECT_KEY }} # Optional, default is ' '
+        sonar-token: ${{ secrets.SONAR_TOKEN }} # Optional, default is ' '
+        sonar-organization: ${{ secrets.SONAR_ORGANIZATION }} # Optional, default is ' '
         sonar-host-url: ${{ secrets.SONAR_HOST }} # Optional, default is 'https://sonarcloud.io'
-        dotnet-solution-path: './path/to/your/solution.sln' # Optional, default is '' (root)
+        dotnet-solution-path: './path/to/your/solution.sln' # Optional, default is ' ' (root)
         dotnet-version: '7.x' # Optional, default is '8.x'
+        is-need-publish: 'true' # Optional, default is ' '
 ```
 
 ### Summary
