@@ -68,10 +68,10 @@ runs:
         SONAR_TOKEN: ${{ inputs.sonar-token }}
       shell: bash
       run: |
-        dotnet sonarscanner begin /k:"${{ inputs.sonar-project-key }}" /o:"${{ inputs.sonar-organization }}" /d:sonar.login="${{ inputs.sonar-token }}" /d:sonar.host.url="${{ inputs.sonar-host-url }}" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+        dotnet sonarscanner begin /k:"${{ inputs.sonar-project-key }}" /o:"${{ inputs.sonar-organization }}" /d:sonar.token="${{ inputs.sonar-token }}" /d:sonar.host.url="${{ inputs.sonar-host-url }}" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
         dotnet build ${{ inputs.dotnet-solution-path }} --no-incremental --configuration Release
         dotnet-coverage collect 'dotnet test ${{ inputs.dotnet-solution-path }} --no-restore' -f xml  -o 'coverage.xml'
-        dotnet sonarscanner end /d:sonar.login="${{ inputs.sonar-token }}"
+        dotnet sonarscanner end /d:sonar.token="${{ inputs.sonar-token }}"
 
     - name: Publish
       if: success()
