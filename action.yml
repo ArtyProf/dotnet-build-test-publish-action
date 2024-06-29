@@ -5,13 +5,13 @@ author: Artur Khutak
 inputs:
   sonar-project-key:
     description: 'SonarCloud project key'
-    required: true
+    default: ''
   sonar-token:
     description: 'SonarCloud token'
-    required: true
+    default: ''
   sonar-organization:
     description: 'SonarCloud organization'
-    required: true
+    default: ''
   sonar-host-url:
     description: 'SonarCloud host url'
     default: 'https://sonarcloud.io'
@@ -55,17 +55,22 @@ runs:
       shell: bash
       run: dotnet test ${{ inputs.dotnet-solution-path }} --no-build --verbosity normal --configuration Release
     
-    - name: Install SonarScanner for .NET
+    - name: Install SonarScanner and coverage tool for .NET
+      if: ${{ inputs.sonar-project-key != '' && inputs.sonar-token != '' && inputs.sonar-organization != '' }}
       shell: bash
-      run: dotnet tool install --global dotnet-sonarscanner
+      run: |
+        dotnet tool install --global dotnet-sonarscanner
+        dotnet tool install --global dotnet-coverage
 
     - name: Run SonarCloud analysis
+      if: ${{ inputs.sonar-project-key != '' && inputs.sonar-token != '' && inputs.sonar-organization != '' }}
       env:
         SONAR_TOKEN: ${{ inputs.sonar-token }}
       shell: bash
       run: |
-        dotnet sonarscanner begin /k:"${{ inputs.sonar-project-key }}" /o:"${{ inputs.sonar-organization }}" /d:sonar.login="${{ inputs.sonar-token }}" /d:sonar.host.url="${{ inputs.sonar-host-url }}"
+        dotnet sonarscanner begin /k:"${{ inputs.sonar-project-key }}" /o:"${{ inputs.sonar-organization }}" /d:sonar.login="${{ inputs.sonar-token }}" /d:sonar.host.url="${{ inputs.sonar-host-url }}" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
         dotnet build ${{ inputs.dotnet-solution-path }} --no-incremental --configuration Release
+        dotnet-coverage collect 'dotnet test ${{ inputs.dotnet-solution-path }} --no-restore' -f xml  -o 'coverage.xml'
         dotnet sonarscanner end /d:sonar.login="${{ inputs.sonar-token }}"
 
     - name: Publish
