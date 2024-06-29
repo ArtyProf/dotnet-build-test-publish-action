@@ -60,4 +60,4 @@ This `README.md` file now reflects your GitHub username and the filename for you
 
 ### View stats
 
-<img src="https://hitcounter.pythonanywhere.com/count/tag.svg" alt="Hits">
+[![Hits](https://hits.sh/github.com/ArtyProf/dotnet-build-test-publish-action.svg)](https://hits.sh/github.com/ArtyProf/dotnet-build-test-publish-action/)
